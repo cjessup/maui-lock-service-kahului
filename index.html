@@ -36,14 +36,17 @@
   </header>
 
   <div class="sheet">
-    <nav class="section-nav" aria-label="Services">
-      <a href="#introduction">Introduction</a>
-      <a href="#commercial">Commercial</a>
-      <a href="#electronic">Electronic</a>
-      <a href="#residential">Residential</a>
-    </nav>
-    <main id="content">
-      <section class="band reveal" id="introduction">
+    <div class="service-area" id="service-area">
+      <div class="service-tabs">
+        <div class="service-tablist" role="tablist" aria-orientation="horizontal" aria-label="Services">
+          <button type="button" class="service-tab" id="tab-introduction" role="tab" aria-selected="true" aria-controls="introduction" tabindex="0">Introduction</button>
+          <button type="button" class="service-tab" id="tab-commercial" role="tab" aria-selected="false" aria-controls="commercial" tabindex="-1">Commercial</button>
+          <button type="button" class="service-tab" id="tab-electronic" role="tab" aria-selected="false" aria-controls="electronic" tabindex="-1">Electronic</button>
+          <button type="button" class="service-tab" id="tab-residential" role="tab" aria-selected="false" aria-controls="residential" tabindex="-1">Residential</button>
+        </div>
+      </div>
+      <main id="content">
+      <section class="band reveal" id="introduction" role="tabpanel" aria-labelledby="tab-introduction" tabindex="0">
         <div>
           <h2>Introduction</h2>
           <p><strong>For over 20 years Maui Lock Service</strong> has been providing lock, safe and security services. Located in Kahului, we are a customer service oriented company offering high security systems and hardware. We specialize in condo and hotel key and lock systems from single vacation rentals to large hotels. Please give us a call today for all your lock, safe, and security needs.</p>
@@ -63,7 +66,7 @@
         </figure>
       </section>
 
-      <section class="band reveal" id="commercial">
+      <section class="band reveal" id="commercial" role="tabpanel" aria-labelledby="tab-commercial" tabindex="0">
         <div>
           <h2>Commercial</h2>
           <p>We are dedicated to providing our customers with superior locksmith service and products that ensure security and are simple to operate and maintain. The safety and satisfaction of our customers is our top priority, we will work with you closely to find the best solutions for your business needs.</p>
@@ -83,7 +86,7 @@
         </figure>
       </section>
 
-      <section class="band reveal" id="electronic">
+      <section class="band reveal" id="electronic" role="tabpanel" aria-labelledby="tab-electronic" tabindex="0">
         <div>
           <h2>Electronic</h2>
           <p>If you are in need of advanced, high-tech electronic access systems and surveillance we carry many special device products for your home or business.</p>
@@ -100,7 +103,7 @@
         </figure>
       </section>
 
-      <section class="band reveal" id="residential">
+      <section class="band reveal" id="residential" role="tabpanel" aria-labelledby="tab-residential" tabindex="0">
         <div>
           <h2>Residential</h2>
           <p>We offer high security keying systems, as well as pick resistant locks to safeguard your home and property. If you’re looking for elegant style and design, we carry <em>Decorative Hardware</em> for your home that can complement your home design style.</p>
@@ -115,7 +118,8 @@
           <img src="assets/residential-locks.png" width="340" height="305" alt="Residential door hardware">
         </figure>
       </section>
-    </main>
+      </main>
+    </div>
 
     <section class="support" aria-label="Customer support">
       <div class="support-col reveal">

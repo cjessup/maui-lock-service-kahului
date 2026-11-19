@@ -279,34 +279,100 @@ a:hover {
   background: var(--paper);
 }
 
-.section-nav {
-  display: flex;
+/* Service tabs. Hidden until JS adds .tabs-ready; without JS the four panels stay stacked. */
+
+.service-tabs {
+  display: none;
+  position: sticky;
+  top: var(--header-offset, var(--header-h));
+  z-index: 35;
   margin: 0;
-  padding: 0;
-  list-style: none;
-  overflow-x: auto;
-  background: #e6e6e6;
-  border-bottom: 1px solid #cfcfcf;
+  background-color: var(--navy);
+  border-bottom: 2px solid var(--olive);
 }
 
-.section-nav a {
-  flex: 1 1 0;
-  min-width: 0;
+.tabs-ready > .service-tabs {
   display: block;
-  padding: 0.55rem 0.15rem;
-  text-align: center;
-  color: #666;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  border-right: 1px solid #d4d4d4;
 }
 
-.section-nav a:hover {
-  color: var(--olive-dark);
-  background: #f6f6f6;
+.service-tablist {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.5rem 0.65rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  background-color: var(--navy);
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 0.65rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.service-tablist::-webkit-scrollbar {
+  display: none;
+  height: 0;
+}
+
+.service-tabs [role="tab"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  position: relative;
+  margin: 0;
+  padding: 0.4rem 0.8rem;
+  min-height: 2.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.service-tabs [role="tab"]:hover,
+.service-tabs [role="tab"]:focus {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.service-tabs [role="tab"][aria-selected="true"] {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--navy);
+}
+
+.service-tabs [role="tab"][aria-selected="true"]:hover,
+.service-tabs [role="tab"][aria-selected="true"]:focus {
+  background: var(--lime);
+  color: var(--navy);
+}
+
+.service-tabs [role="tab"]:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--navy);
+}
+
+.tabs-ready [role="tabpanel"]:not(.is-active) {
+  display: none;
+}
+
+.tabs-ready [role="tabpanel"] {
+  border-top: 0;
 }
 
 .band {
@@ -731,6 +797,23 @@ blockquote {
   transform: none;
 }
 
+@keyframes tab-panel-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tabs-ready [role="tabpanel"].is-entering {
+    transition: none;
+    animation: tab-panel-in 0.22s ease;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -741,13 +824,17 @@ blockquote {
     transform: none;
     transition: none;
   }
+
+  .tabs-ready [role="tabpanel"].is-entering {
+    animation: none;
+  }
 }
 
 @media (min-width: 420px) {
-  .section-nav a {
-    font-size: 0.78rem;
+  .service-tabs [role="tab"] {
+    font-size: 0.82rem;
     letter-spacing: 0.03em;
-    padding: 0.6rem 0.4rem;
+    padding: 0.45rem 0.9rem;
   }
 
   .brand-tag {
