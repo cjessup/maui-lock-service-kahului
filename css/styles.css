@@ -279,9 +279,22 @@ a:hover {
   background: var(--paper);
 }
 
-/* Service tabs. Hidden until JS adds .tabs-ready; without JS the four panels stay stacked. */
+/* Service tabs. Hidden until JS adds .tabs-ready; without JS the four panels stay stacked.
+   Timings for the panel crossfade, content stagger, and sliding pill. */
 
 .service-tabs {
+  --tab-out: 200ms;
+  --tab-in: 340ms;
+  --tab-stagger: 40ms;
+  --tab-pill: 300ms;
+  --tab-budget: 600ms;
+  --tab-ease-in: ease-in;
+  --tab-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --tab-out-shift: 6px;
+  --tab-in-shift: 10px;
+  --tab-out-blur: 4px;
+  --tab-in-blur: 6px;
+  --tab-in-scale: 0.985;
   display: none;
   position: sticky;
   top: var(--header-offset, var(--header-h));
@@ -319,6 +332,25 @@ a:hover {
   height: 0;
 }
 
+/* Sliding lime pill. JS sets width and translate from the active tab.
+   It lives inside the scroller so horizontal scroll stays aligned. */
+.service-tab-indicator {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-radius: 999px;
+  background: var(--lime);
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform var(--tab-pill) var(--tab-ease-out),
+    width var(--tab-pill) var(--tab-ease-out),
+    height var(--tab-pill) var(--tab-ease-out);
+}
+
 .service-tabs [role="tab"] {
   display: inline-flex;
   align-items: center;
@@ -326,6 +358,7 @@ a:hover {
   flex: 0 0 auto;
   scroll-snap-align: start;
   position: relative;
+  z-index: 1;
   margin: 0;
   padding: 0.4rem 0.8rem;
   min-height: 2.25rem;
@@ -367,12 +400,46 @@ a:hover {
   box-shadow: 0 0 0 2px var(--navy);
 }
 
-.tabs-ready [role="tabpanel"]:not(.is-active) {
+.tabs-ready [role="tabpanel"]:not(.is-active):not(.is-leaving) {
   display: none;
 }
 
 .tabs-ready [role="tabpanel"] {
   border-top: 0;
+}
+
+/* Kill the reveal transition while a panel is mid-swap so it cannot
+   fight the Web Animations fade. */
+.tabs-ready [role="tabpanel"].is-entering,
+.tabs-ready [role="tabpanel"].is-leaving {
+  transition: none;
+}
+
+/* Both panels are taken out of flow. min-height/height on #content
+   (set from JS) holds the space so the page does not jump. */
+.service-area.is-switching > #content {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-area.is-switching > #content > [role="tabpanel"].is-active,
+.service-area.is-switching > #content > [role="tabpanel"].is-leaving {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin: 0;
+  transform-origin: center top;
+}
+
+.service-area.is-switching > #content > [role="tabpanel"].is-leaving {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.service-area.is-switching > #content > [role="tabpanel"].is-active {
+  z-index: 2;
 }
 
 .band {
@@ -797,23 +864,6 @@ blockquote {
   transform: none;
 }
 
-@keyframes tab-panel-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .tabs-ready [role="tabpanel"].is-entering {
-    transition: none;
-    animation: tab-panel-in 0.22s ease;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -825,8 +875,9 @@ blockquote {
     transition: none;
   }
 
-  .tabs-ready [role="tabpanel"].is-entering {
-    animation: none;
+  .service-tab-indicator,
+  .service-tabs [role="tab"] {
+    transition: none;
   }
 }
 
